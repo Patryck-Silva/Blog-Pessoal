@@ -1,7 +1,6 @@
 package com.generation.blogpessoal.model;
 
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -22,18 +20,16 @@ public class Tema {
 @GeneratedValue(strategy = GenerationType.IDENTITY)
 private long id;
 
-@NotBlank(message = "A descrição é obrigatória")
-private String resumo_desc;
 
-@NotNull
+@NotBlank(message="a descricao Deve ser preenchido")
 @Size(min = 10, max=200,message = "O texto deve conter no minímo 10 e no máximo 200 caracteres.")
 private String descricao;
+
 //relacionamento
 @OneToMany(mappedBy ="tema",cascade = CascadeType.REMOVE)
 @JsonIgnoreProperties("tema")
 private List<Postagem> postagem;
 
-//getters and setters
 public long getId() {
 	return id;
 }
@@ -43,11 +39,11 @@ public void setId(long id) {
 }
 
 public String getDescricao() {
-	return resumo_desc;
+	return descricao;
 }
 
 public void setDescricao(String descricao) {
-	this.resumo_desc= descricao;
+	this.descricao = descricao;
 }
 
 public List<Postagem> getPostagem() {
@@ -58,14 +54,4 @@ public void setPostagem(List<Postagem> postagem) {
 	this.postagem = postagem;
 }
 
-public String getResumo_desc() {
-	return resumo_desc;
-}
-
-public void setResumo_desc(String resumo_desc) {
-	this.resumo_desc = resumo_desc;
-}
-
-
-	
 }

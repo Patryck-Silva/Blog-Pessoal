@@ -1,7 +1,6 @@
 package com.generation.blogpessoal.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
+
 
 import com.generation.blogpessoal.model.Postagem;
 import com.generation.blogpessoal.repository.PostagemRepository;
@@ -37,7 +36,6 @@ public class PostagemController {
 		return ResponseEntity.ok(postagensRepository.findAll());
 		// select * from tb_postagem
 	}
-	
 	@GetMapping("/{id}")
 	public ResponseEntity <Postagem>getById(@PathVariable Long id){
 		return postagensRepository.findById(id)
@@ -61,14 +59,13 @@ public class PostagemController {
 	
 	@DeleteMapping ("/{id}")
     @ResponseStatus (HttpStatus.NO_CONTENT)//Para trazer o status sem conteúdo
-    public void deletePostagem (@Valid @PathVariable Long id){
-        Optional<Postagem> postagem = postagensRepository.findById(id); //como se fosse map
-
-        if (postagem.isEmpty()) //checagem se é vazio...
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND); //caso não encontre "joga" uma nova resposta
-
-        postagensRepository.deleteById(id); //chamo o método postagemRepository
-
-        //Deletar método Delete
+    public ResponseEntity<Object> deletePostagem (@Valid @PathVariable Long id){
+		return postagensRepository.findById(id)
+				.map(resposta -> {
+					postagensRepository.deleteById(id);
+					return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+				})
+				.orElse(ResponseEntity.notFound().build());
+    
     }
 }
