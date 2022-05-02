@@ -59,15 +59,16 @@ public class PostagemController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(postagensRepository.save(postagem));
 	}
 	
-	@DeleteMapping("/{id}")
-	@ResponseStatus (HttpStatus.NO_CONTENT)
-	public void deletepostagem(@PathVariable Long id) {
-		Optional<Postagem> postagem = postagensRepository.findById(id);
-		
-		if(postagem.isEmpty()) 
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-	
-			postagensRepository.deleteById(id);
-		
-	}
+	@DeleteMapping ("/{id}")
+    @ResponseStatus (HttpStatus.NO_CONTENT)//Para trazer o status sem conteúdo
+    public void deletePostagem (@Valid @PathVariable Long id){
+        Optional<Postagem> postagem = postagensRepository.findById(id); //como se fosse map
+
+        if (postagem.isEmpty()) //checagem se é vazio...
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND); //caso não encontre "joga" uma nova resposta
+
+        postagensRepository.deleteById(id); //chamo o método postagemRepository
+
+        //Deletar método Delete
+    }
 }
