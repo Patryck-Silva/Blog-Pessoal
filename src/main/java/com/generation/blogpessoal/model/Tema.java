@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Tema {
 @Id
 @GeneratedValue(strategy = GenerationType.IDENTITY)
-private long id;
+private Long id;
 
 
 @NotBlank(message="a descricao Deve ser preenchido")
