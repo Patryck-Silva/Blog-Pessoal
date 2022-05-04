@@ -18,9 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import com.generation.blogpessoal.model.Postagem;
 import com.generation.blogpessoal.repository.PostagemRepository;
+import com.generation.blogpessoal.repository.TemaRepository;
+import com.generation.blogpessoal.repository.UsuarioRepository;
 
 
 @RestController
@@ -31,6 +32,11 @@ public class PostagemController {
 	@Autowired
 	private PostagemRepository postagensRepository;
 	
+	@Autowired
+	private TemaRepository temarepository;
+	
+	@Autowired
+	private UsuarioRepository usuariorepository;
 	@GetMapping
 	public ResponseEntity <List<Postagem>> getAll(){
 		return ResponseEntity.ok(postagensRepository.findAll());
@@ -48,14 +54,22 @@ public class PostagemController {
 	}
 	@PutMapping 
 	public ResponseEntity <Postagem> putPostagem (@Valid @RequestBody Postagem postagem){
-		return postagensRepository.findById(postagem.getId())
-				.map(resposta -> ResponseEntity.status(HttpStatus.OK).body(postagensRepository.save(postagem)))
-				.orElse(ResponseEntity.notFound().build());
+		if(postagensRepository.existsById(postagem.getId())) {
+			if(temarepository.existsById(postagem.getTema().getId()))
+				return ResponseEntity.status(HttpStatus.OK)
+						.body(postagensRepository.save(postagem));
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		return ResponseEntity .status(HttpStatus.NOT_FOUND).build();
 	}
 	@PostMapping 
 	public ResponseEntity <Postagem> postPostagem (@Valid @RequestBody Postagem postagem){
-		return ResponseEntity.status(HttpStatus.CREATED).body(postagensRepository.save(postagem));
+		if(temarepository.existsById(postagem.getTema().getId()))
+			return ResponseEntity.status(HttpStatus.CREATED).body(postagensRepository.save(postagem));
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 	}
+	
 	
 	@DeleteMapping ("/{id}")
     @ResponseStatus (HttpStatus.NO_CONTENT)//Para trazer o status sem conteúdo
