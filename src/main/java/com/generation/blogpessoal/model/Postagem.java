@@ -1,6 +1,6 @@
 package com.generation.blogpessoal.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,7 +31,7 @@ public class Postagem {
 	private	String texto;
 	
 	@UpdateTimestamp
-	private	LocalDateTime data;
+	private	LocalDate data;
 	
 	//relacionamento com temas
 	@ManyToOne
@@ -39,7 +39,7 @@ public class Postagem {
 	private Tema tema;
 	
 	@ManyToOne
-	@JsonIgnoreProperties("usuario")
+	@JsonIgnoreProperties("postagem")
 	private Usuario usuario;
 	
 	public Usuario getUsuario() {
@@ -67,10 +67,10 @@ public class Postagem {
 	public void setTexto(String texto) {
 		this.texto = texto;
 	}
-	public LocalDateTime getData() {
+	public LocalDate getData() {
 		return data;
 	}
-	public void setData(LocalDateTime data) {
+	public void setData(LocalDate data) {
 		this.data = data;
 	}
 	public Tema getTema() {
