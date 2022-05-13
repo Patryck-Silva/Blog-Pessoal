@@ -16,6 +16,18 @@ public class UsuarioLogin {
 	private String token;
 
 	
+// Primeiro método Construtor
+
+		public UsuarioLogin(Long id, String nome, String usuario, String senha, String foto) {
+			this.id = id;
+			this.nome = nome;
+			this.usuario = usuario;
+			this.senha = senha;
+			this.foto = foto;
+		}
+
+// Segundo método Construtor
+		public UsuarioLogin() {	}
 //getters and setters
 	public Long getId() {
 		return id;
