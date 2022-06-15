@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.generation.blogpessoal.model.Postagem;
 import com.generation.blogpessoal.repository.PostagemRepository;
 import com.generation.blogpessoal.repository.TemaRepository;
+import com.generation.blogpessoal.service.PostagemService;
 
 
 @RestController
@@ -33,6 +34,9 @@ public class PostagemController {
 	
 	@Autowired
 	private TemaRepository temarepository;
+	
+	@Autowired
+	private PostagemService postagemService;
 	
 	@GetMapping
 	public ResponseEntity <List<Postagem>> getAll(){
@@ -79,4 +83,13 @@ public class PostagemController {
 				.orElse(ResponseEntity.notFound().build());
     
     }
+	
+	@PutMapping("/curtir/{id}")
+	public ResponseEntity<Postagem> curtirProdutoId (@PathVariable Long id){
+		
+		return postagemService.curtir(id)
+			.map(resposta-> ResponseEntity.ok(resposta))
+			.orElse(ResponseEntity.badRequest().build());
+	
+	}
 }

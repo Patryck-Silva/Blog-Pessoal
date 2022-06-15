@@ -2,6 +2,7 @@ package com.generation.blogpessoal.model;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -32,6 +33,9 @@ public class Postagem {
 	
 	@UpdateTimestamp
 	private	LocalDate data;
+	
+	 @Column(columnDefinition = "integer default 0")
+		private int curtir;
 	
 	//relacionamento com temas
 	@ManyToOne
@@ -78,6 +82,12 @@ public class Postagem {
 	}
 	public void setTema(Tema tema) {
 		this.tema = tema;
+	}
+	public int getCurtir() {
+		return curtir;
+	}
+	public void setCurtir(int curtir) {
+		this.curtir = curtir;
 	}
 		
 	
